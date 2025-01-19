@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:2.21.5
+    container_name: portainer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      private_network:
+        ipv4_address: 192.168.1.2
+
+volumes:
+  portainer_data:
+
+networks:
+  private_network:
+    external: true
+

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    environment:
+      - N8N_TRUST_PROXY=true
+      - N8N_ENCRYPTION_KEY=my-secure-encryption-key
+      - WEBHOOK_URL=http://172.19.0.11:5678/
+      - N8N_SECURE_COOKIE=false
+      - N8N_PROTOCOL=https
+      - SSL_KEY=/home/node/.n8n/certs/n8n-key.pem
+      - SSL_CERT=/home/node/.n8n/certs/n8n-cert.pem
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=n8nuser
+      - N8N_BASIC_AUTH_PASSWORD=3zuqidoEBF3xRKZUWn64
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=n8n_db
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=nmBtmTPLVmp8aecDgTW6
+      - NODE_FUNCTION_ALLOW_EXTERNAL=axios,qs
+    depends_on:
+      - db
+    volumes:
+      - /opt/automation-ai-server/n8n/certs:/home/node/.n8n/certs
+    restart: unless-stopped
+    networks:
+      - private_network:
+        ipv4_address: 192.168.1.6
+      - dify_default:
+        ipv4_address: 172.19.0.11
+
+  db:
+    image: postgres:12
+    container_name: n8n_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=nmBtmTPLVmp8aecDgTW6
+      - POSTGRES_DB=n8n
+    restart: unless-stopped
+    networks:
+      - private_network: 
+        ipv4_address: 192.168.1.7
+volumes:
+  db-data:
+
+networks:
+  private_network:
+    external: true
+  dify_default:
+    external: true
