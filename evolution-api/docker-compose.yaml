@@ -36,9 +36,9 @@ services:
       - redis
       - postgres
     networks:
-      - private_network:
+      private_network:
         ipv4_address: 192.168.1.4
-      - dify_default:
+      dify_default:
         ipv4_address: 172.19.0.10
 
   redis:
@@ -51,7 +51,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - private_network:
+      private_network:
         ipv4_address: 192.168.1.9
 
   postgres:
@@ -70,7 +70,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - private_network:
+      private_network:
         ipv4_address: 192.168.1.10
 
 networks:
