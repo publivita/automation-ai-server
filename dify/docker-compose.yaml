@@ -406,14 +406,15 @@ services:
     depends_on:
       - db
       - redis
+    networks:
+      ssrf_proxy_network:
+        ipv4_address: "172.20.0.4"
+      default:
+        ipv4_address: "172.19.0.7"
     volumes:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
-    networks:
-      - ssrf_proxy_network:
-        ipv4_address: 172.20.0.4
-      - default:
-        ipv4_address: 172.19.0.7
+
 
   # worker service
   # The Celery worker for processing the queue.
@@ -435,10 +436,10 @@ services:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
     networks:
-      - ssrf_proxy_network:
-        ipv4_address: 172.20.0.5
-      - default:
-        ipv4_address: 172.19.0.8
+      ssrf_proxy_network:
+        ipv4_address: "172.20.0.5"
+      default:
+        ipv4_address: "172.19.0.8"
 
   # Frontend web application.
   web:
@@ -453,8 +454,8 @@ services:
       CSP_WHITELIST: ${CSP_WHITELIST:-}
       TOP_K_MAX_VALUE: ${TOP_K_MAX_VALUE:-}
     networks:
-      - default:
-        ipv4_address: 172.19.0.6 
+      default:
+        ipv4_address: "172.19.0.6"
 
   # The postgres database.
   db:
@@ -479,13 +480,16 @@ services:
       timeout: 3s
       retries: 30
     networks:
-      - default:
-        ipv4_address: 172.19.0.3
+      default:
+        ipv4_address: "172.19.0.3"
 
   # The redis cache.
   redis:
     image: redis:6-alpine
     restart: always
+    networks:
+      default:
+        ipv4_address: "172.19.0.4"
     environment:
       REDISCLI_AUTH: ${REDIS_PASSWORD:-difyai123456}
     volumes:
@@ -495,9 +499,6 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD:-difyai123456}
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
-    networks:
-      - default:
-        ipv4_address: 172.19.0.4
 
   # The DifySandbox
   sandbox:
@@ -519,8 +520,8 @@ services:
     healthcheck:
       test: [ 'CMD', 'curl', '-f', 'http://localhost:8194/health' ]
     networks:
-      - ssrf_proxy_network:
-        ipv4_address: 172.20.0.2
+      ssrf_proxy_network:
+        ipv4_address: "172.20.0.2"
 
   # ssrf_proxy server
   # for more information, please refer to
@@ -540,10 +541,10 @@ services:
       SANDBOX_HOST: ${SSRF_SANDBOX_HOST:-sandbox}
       SANDBOX_PORT: ${SANDBOX_PORT:-8194}
     networks:
-      - ssrf_proxy_network:
-        ipv4_address: 172.20.0.3
-      - default:
-        ipv4_address: 172.19.0.5
+      ssrf_proxy_network:
+        ipv4_address: "172.20.0.3"
+      default:
+        ipv4_address: "172.19.0.5"
 
   # Certbot service
   # use `docker-compose --profile certbot up` to start the certbot service.
@@ -602,10 +603,10 @@ services:
       - api
       - web
     networks:
-      - private_network:
-        ipv4_address: 192.168.1.5
-      - default:
-        ipv4_address: 172.19.0.9
+      private_network:
+        ipv4_address: "192.168.1.5"
+      default:
+        ipv4_address: "172.19.0.9"
 
 
   # The TiDB vector store.
@@ -643,8 +644,8 @@ services:
       AUTHORIZATION_ADMINLIST_USERS: ${WEAVIATE_AUTHORIZATION_ADMINLIST_USERS:-hello@dify.ai}
 
     networks:
-      - default:
-        ipv4_address: 172.19.0.2
+      default:
+        ipv4_address: "172.19.0.2"
   # Qdrant vector store.
   # (if used, you need to set VECTOR_STORE to qdrant in the api & worker service.)
   qdrant:
@@ -977,6 +978,14 @@ networks:
   ssrf_proxy_network:
     driver: bridge
     internal: true
+    ipam:
+      config:
+        - subnet: "172.20.0.0/16"
+  default:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+    
   milvus:
     driver: bridge
   opensearch-net:
