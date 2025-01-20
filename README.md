@@ -51,11 +51,11 @@ Lista de IPs após subir o container do zero
 
 | Serviço          | URL                                      |
 |------------------|------------------------------------------|
-| n8n              | [http://192.168.1.7:5678/setup](http://192.168.1.7:5678/setup) |
-| dify_nginx_1     | [http://172.19.0.9:80/](http://172.19.0.9:80/)                 |
-| portainer        | [https://172.18.0.2:9443/#!/home](https://172.18.0.2:9443/#!/home) |
-| minio            | [http://192.168.1.2:9001/login](http://192.168.1.2:9001/login) |
-| evolution_api    | [http://192.168.1.5:8080/manager](http://192.168.1.5:8080/manager) |
+| n8n              | [http://192.168.1.6:5678/setup](http://192.168.1.6:5678/setup) |
+| dify_nginx_1     | [http://192.168.1.5:80/](http://192.168.1.5:80/)                 |
+| portainer        | [https://192.168.1.2:9443/#!/home](https://192.168.1.2:9443/#!/home) |
+| minio            | [http://192.168.1.3:9001/login](http://192.168.1.3:9001/login) |
+| evolution_api    | [http://192.168.1.4:8080/manager](http://192.168.1.4:8080/manager) |
 
 ## ⚙️ O Que o Script Faz
 
