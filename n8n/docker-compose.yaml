@@ -8,6 +8,7 @@ services:
       - N8N_TRUST_PROXY=true
       - N8N_ENCRYPTION_KEY=my-secure-encryption-key
       - WEBHOOK_URL=http://172.19.0.11:5678/
+      #- WEBHOOK_URL=https://n8n.snakeblack.com
       - N8N_SECURE_COOKIE=false
       - N8N_PROTOCOL=https
       - SSL_KEY=/home/node/.n8n/certs/n8n-key.pem
