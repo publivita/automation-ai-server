@@ -76,7 +76,7 @@ fi
 log "Instalando contêineres..."
 cd "$WORK_DIR"
 
-for service in portainer minio evolution-api n8n dify; do
+for service in portainer minio dify evolution-api n8n ; do
   log "Subindo contêiner $service..."
   if [[ -d "$service" ]]; then
     cd "$service"
